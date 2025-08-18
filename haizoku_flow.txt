@@ -1,0 +1,67 @@
+研究室に配属されてからまずやること
+# 研究室に配属されて最初にやること #新規配属向け #初期設定 #セットアップ
+
+[この記事について]
+知的機構研究室 奥田グループに入っていただきありがとうございます！
+研究室に配属されて「まず何から始めればいいんだろう？」「最初にやるべきことは？」と迷っている方は、まずこの記事の内容を一つずつ確認してください。
+この記事では、研究活動を本格的にスタートするために不可欠な、アカウントのセットアップや各種ツールへの参加方法など、一番最初に行うべきタスクリストを説明しています。
+この記事で説明されている準備が完了したら、次に「自主学習用教材リスト」や「研究室ゼミについて」などを参考に、学習やゼミ準備へと進んでいくとスムーズです。
+
+[やることリスト]
+研究室から配布されるgoogleアカウント (google workspace for educationアカウント)を使用しない場合は，
+大学用メールアドレス，または新たなgoogleアカウントを用意することをお勧めします．
+行なってもらう準備は以下の通りです．
+
+[#googleWorkspaceForEducation のアカウント作成]
+[cite_start]google workspace for educationは研究室から配布されるgoogle アカウントです． [cite: 12]
+[cite_start]"苗字".vig.doshisha.ac.jpというアカウント名になっています． [cite: 12]
+[cite_start]大容量のgoogle driveが使用できるので #googleColab を使用する際に便利です． [cite: 13]
+[cite_start]登録手順は以下の通りです． [cite: 13]
+[cite_start][* 【登録される学生側の作業】] [cite: 13]
+1. [cite_start]アカウント名と初期パスワードを共有されるので，そちらを使用して通常のgoogleアカウントと同様にログインする． [cite: 13]
+[cite_start]ログイン方法がわからない場合は，[こちらのページ https://www.howtonote.jp/google-account/new/index3.html]を確認してください． [cite: 13]
+[cite_start]アカウント作成から時間が経ちすぎると初期パスワードが無効になる場合があります． [cite: 13]
+[cite_start]その際は奥田先生，またはgoogle workspaceを管理している学生に連絡し，パスワードをリセットしてもらってください． [cite: 13]
+[cite_start][* 【奥田先生・奥田グループの学生(管理者権限あり)の作業】] [cite: 14]
+1. [cite_start]google workspace for educationのgoogleアカウントでログイン [cite: 14]
+2. [cite_start]右上の四角いアイコンをクリックし，"管理"アプリを起動 [cite: 14]
+3. [cite_start]"ユーザー"にある"管理"をクリック [cite: 14]
+4. [cite_start]新しいユーザーの追加をクリック [cite: 14]
+5. [cite_start]姓，名，メインのメールアドレス欄を入力し，新しいユーザーの追加をクリック [cite: 14]
+[cite_start]メインのメールアドレスは苗字をローマ字入力． [cite: 14]
+[cite_start]例) 苗字が同志社の場合，doshisha@vig.doshisha.ac.jpのようにする． [cite: 14]
+6. [cite_start]招待される学生にアカウント名，および初期パスワードを共有 [cite: 14]
+[cite_start]試したことないのですが，csvファイルを使用してユーザーを一括追加できるようです． [cite: 14]
+[cite_start]使用する場合は[このページ https://support.google.com/a/answer/40057?hl=ja]を参考にしてください． [cite: 14]
+[cite_start]パスワードを再設定する場合，再設定するユーザーにカーソルを合わせた際に表示される，"パスワードを再設定"をクリックしてください． [cite: 14]
+
+[scrapbox のメンバー登録]
+[cite_start]scrapboxには研究室に関する情報，トラブルシューティング，学会参加時に役立つ情報がまとめてあります． [cite: 14]
+[cite_start]もし，あなたがこのページを自分のPCで見ている場合，特に必要な準備はないので飛ばしてください． [cite: 14]
+[cite_start]登録手順は以下の通りです． [cite: 15]
+[cite_start]【招待される学生側の作業】 [cite: 15]
+1. [cite_start]scrapbox招待用URLを奥田先生，または奥田グループの学生に教えてもらう． [cite: 15]
+2. [cite_start]共有されたurlをクリックし，表示された指示に従って手続き [cite: 15]
+
+[cite_start]【奥田先生・奥田グループ学生の作業】 [cite: 15]
+[cite_start]以下のURLを学生にslackまたはメールで共有してください． [cite: 15]
+[cite_start]https://scrapbox.io/projects/VigProLab/invitations/7425341ce462d395a4b45ce7fcd8962b [cite: 15]
+[cite_start]このURLは一番左上のプルダウン → Project setting → membersに記載されています． [cite: 15]
+[cite_start]上記URLの表示がまずかったら削除お願いします． [cite: 15]
+[cite_start]詳細は[このページ https://scrapbox.io/help-jp/%E3%83%A1%E3%83%B3%E3%83%90%E3%83%BC%E3%82%92%E6%8B%9B%E5%BE%85%E3%81%97%E3%81%A6%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B]を確認してください． [cite: 15]
+
+[#slack へのアカウント追加]
+[cite_start]slackは研究室で使用しているツールです(研究室用lineみたいな感じ)． [cite: 15]
+[cite_start]研究室に関するアナウンス，個人への連絡はslackで行われます． [cite: 15]
+[cite_start]登録手順は以下の通りです． [cite: 15]
+[cite_start][招待される学生側の作業】] [cite: 16]
+1. [cite_start]奥田先生，あるいは奥田グループの学生に自身のメールアドレスを共有する(後述するgoogle workspaceのgoogle アカウントでも可)． [cite: 16]
+2. [cite_start]招待メールが届くのでクリックし，以降は表示されるページの指示に従う． [cite: 16]
+
+[cite_start][【奥田先生・奥田グループ学生の作業】] [cite: 16]
+1. [cite_start][このページ https://slack.com/intl/ja-jp/help/articles/201330256-%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B9%E3%81%AB%E6%96%B0%E8%A6%8F%E3%83%A1%E3%83%B3%E3%83%90%E3%83%BC%E3%82%92%E6%8B%9B%E5%BE%85%E3%81%99%E3%82%8B#%E3%83%87%E3%82%B9%E3%82%AF%E3%83%88%E3%83%83%E3%83%97-1]の手順に沿って招待メールを送信 [cite: 16]
+
+[#github アカウントの作成]
+[cite_start]githubは研究用のコード，および研究室ホームページのリソース管理に使用しています． [cite: 16]
+[cite_start]奥田先生や他の共同研究者(外部や先輩含む)とコードを共有する際に使用します． [cite: 16]
+[cite_start]アカウントの作成方法は[GitHubについて]を参考にしてください． [cite: 16]

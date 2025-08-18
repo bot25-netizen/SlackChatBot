@@ -1,0 +1,23 @@
+ドキュメント種別:自主学習用教材リスト_Python
+対象者:B4（学部4年生）、新規研究室配属者，Pythonについて学びたい人
+目的：研究に必要な技術・知識の自主学習を支援する。
+「何から始めればいいかわからない」「どの教材で勉強すればいいかわからない」という状況の学生が行動しやすくする。
+利用ガイドライン
+学習範囲: すべてを学習する必要はなく、各自が必要な部分を選択して学習すること。
+2. プログラミング言語関係
+2.1. Python
+教材名:
+Python Japan ゼロからのPython入門講座
+リンク: 
+https://www.python.jp/train/index.html
+特徴:
+Google Colaboratoryを使用し、Pythonの基本を学べる。Google Colaboratoryの使い方も同時に習得できる。
+教材名:
+Chainer Tutorial 8. Numpy入門
+リンク: 
+https://tutorials.chainer.org/ja/08_Introduction_to_NumPy.html
+対象ライブラリ:
+Numpy (数値計算ライブラリ)
+特徴:
+Google Colaboratoryを使用する。
+PytorchはNumpyと記法が似ているため、先にNumpyを学習することが推奨される場合がある。
