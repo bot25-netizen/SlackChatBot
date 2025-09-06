@@ -1,5 +1,3 @@
-# main.py
-
 import os
 import logging
 from pathlib import Path
@@ -8,7 +6,6 @@ from slack_bolt.async_app import AsyncApp
 from slack_bolt.adapter.fastapi.async_handler import AsyncSlackRequestHandler
 import google.generativeai as genai
 
-# --- 初期設定 ---
 logging.basicConfig(level=logging.INFO)
 app = FastAPI()
 slack_app = AsyncApp(
@@ -17,7 +14,6 @@ slack_app = AsyncApp(
 )
 slack_handler = AsyncSlackRequestHandler(slack_app)
 
-# Gemini APIキーの安全な設定
 try:
     genai.configure(api_key=os.environ["GEMINI_API_KEY"])
     generative_model = genai.GenerativeModel("gemini-2.0-flash")
@@ -44,14 +40,11 @@ DOCUMENTS_INFO = [
 DOCUMENTS_DIR = Path(__file__).parent / "documents"
 doc_keywords = [doc["keyword"] for doc in DOCUMENTS_INFO]
 
-# --- ヘルパー関数 ---
-
 async def get_gemini_response(prompt: str) -> str:
     """Gemini APIを呼び出し、応答を生成する関数"""
     if not generative_model:
         return "Gemini APIキーが設定されていないため、応答できません．"
     try:
-        # 安全性設定を調整し、不必要なブロックを回避
         safety_settings = {
             'HARM_CATEGORY_HARASSMENT': 'BLOCK_NONE',
             'HARM_CATEGORY_HATE_SPEECH': 'BLOCK_NONE',
@@ -73,7 +66,6 @@ async def send_long_message(client, channel: str, thread_ts: str, text: str):
     parts = []
     current_pos = 0
     while current_pos < len(text):
-        # 「。」だけでなく改行でも分割を試みる
         split_pos = text.rfind("．", current_pos, current_pos + limit)
         if split_pos == -1:
             split_pos = text.rfind("\n", current_pos, current_pos + limit)
@@ -88,15 +80,13 @@ async def send_long_message(client, channel: str, thread_ts: str, text: str):
         part_text = f"*{i+1}/{len(parts)}*\n\n{part}"
         await client.chat_postMessage(channel=channel, thread_ts=thread_ts, text=part_text)
 
-# --- 起動時の処理 ---
 @app.on_event("startup")
 async def startup_event():
     """起動時に資料リストをログに出力する"""
     logging.info(f"以下の資料をキーワードで認識しました: {doc_keywords}")
     if not doc_keywords:
         logging.warning("警告: DOCUMENTS_INFOリストが空です．")
-
-# --- エンドポイントの定義 ---
+        
 @app.get("/health")
 async def health_check():
     """Renderのヘルスチェック用"""
@@ -107,20 +97,16 @@ async def endpoint(req: Request):
     """Slackからのイベントを受け取る"""
     return await slack_handler.handle(req)
 
-# --- Slack Botのメインロジック ---
 @slack_app.event("app_mention")
 @slack_app.event("message")
 async def handle_message(event, say, client, context):
     """メンションとDMを処理する"""
-    # ボット自身のメッセージは無視
     if event.get("bot_id") is not None:
         return
         
     channel_type = event.get("channel_type", "")
     
-    # メンションかDMの場合のみ処理を続行
     if channel_type == 'im' or event['type'] == 'app_mention':
-        # メンションとDMでユーザーの質問を正しく抽出
         if event['type'] == 'app_mention':
             user_query = event['text'].replace(f"<@{context['bot_user_id']}>", "").strip()
         else:
@@ -135,7 +121,7 @@ async def handle_message(event, say, client, context):
         thinking_message = await say(text="🤔 どの資料を読めばいいか考えています...", thread_ts=thread_ts)
 
         try:
-            # Step 1: AIによる資料選択
+
             topic_descriptions = "\n".join([f"- トピック名: {doc['keyword']}\n  説明: {doc['description']}" for doc in DOCUMENTS_INFO])
             classification_prompt = (
                 f"あなたはユーザーの質問内容を分析し、最も関連性の高い資料を判断する専門家です．\n"
@@ -151,12 +137,10 @@ async def handle_message(event, say, client, context):
 
             selected_doc_info = next((doc for doc in DOCUMENTS_INFO if doc["keyword"] == topic), None)
 
-            # Step 2: プロンプトの組み立てと回答生成
             if selected_doc_info:
-                # 特定の資料が見つかった場合の処理
                 selected_file = selected_doc_info["filename"]
                 await client.chat_update(
-                    channel=channel_id, ts=thinking_message['ts'], text=f"🤔 `{selected_file}` を読んでいます..."
+                    channel=channel_id, ts=thinking_message['ts'], text=f"🤔 関連する資料を読んでるよ．ちょっと待ってね"
                 )
                 
                 context_text = (DOCUMENTS_DIR / selected_file).read_text(encoding='utf-8')
@@ -180,7 +164,7 @@ async def handle_message(event, say, client, context):
                 await send_long_message(client, channel=channel_id, thread_ts=thread_ts, text=reply_text)
 
             else:
-                # 一般知識で回答する場合の処理
+
                 await client.chat_update(
                     channel=channel_id, ts=thinking_message['ts'], text="🤔 うーん、関連する資料は見つからなかったけど、僕の知識で答えてみるね．"
                 )
@@ -196,7 +180,7 @@ async def handle_message(event, say, client, context):
                 )
 
                 reply_text = await get_gemini_response(fallback_query)
-                # thinking_messageを更新して最終回答を表示
+
                 await client.chat_update(channel=channel_id, ts=thinking_message['ts'], text=reply_text)
 
         except Exception as e:
