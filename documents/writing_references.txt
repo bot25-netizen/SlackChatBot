@@ -1,0 +1,56 @@
+参考文献の書き方
+注意：arXivは査読有無に関わらず自由に論文を載せてよいリポジトリでしかない．arXivの論文を引用する場合は，必ずタイトルで検索し直して，国際会議やジャーナルで採択されていないか確認すること．
+
+[* ジャーナル論文の例]
+M. Araki, M. Katsurai, I. Ohmukai, and H. Takeda, “Interdisciplinary Collaborator Recommendation Based on Research Content Similarity,” IEICE Transactions on Information and Systems, vol. E100-D, no. 4, pp.785--792, May, 2017. 
+	著者名，タイトル，論文誌名，vol, no, ページ, 月，年
+	volとnoは必ず入れる．最近のジャーナルはnoがなかったりするかも．．．念のため確認する
+
+@article{17-araki-ieice,
+author={Araki, M. and Katsurai, M. and Ohmukai, I. and Takeda, H.},
+journal={IEICE Trans. Information and Systems}, 
+title={Interdisciplinary Collaborator Recommendation Based on Research Content Similarity},
+year={2017}, 
+month={April}, 
+volume={E99-D}, 
+number={4},
+pages={785--792},
+}
+
+
+[* 国際会議の例]
+M. Katsurai and S. Satoh, "Image Sentiment Analysis Using Latent Correlations Among Visual, Textual, and Sentiment Views,” Proc. the 41st IEEE Int. Conf. Acoustics, Speech, and Signal Processing (ICASSP), pp.2837--2841, 2016.
+	著者名，タイトル，会議名，ページ，年
+	基本的に会議名は[* 略称だけでなく正式名称がわかるように書いておくのが無難]．論文書き慣れている人はProc. ICASSP のように略だけ書いていたりするが，ジャーナル論文は出版社が直しを入れてくることもある．会議名は全単語が大文字始まり．
+	ページ番号入れる．ページがないならDOIを入れる
+
+@inproceedings{16-katsurai-icassp,
+author = {Katsurai, M. and Satoh, S.},
+title = {Image Sentiment Analysis Using Latent Correlations Among Visual, Textual, and Sentiment Views},
+booktitle = {Proc. Int. Conf. Acoustics, Speech, and Signal Processing (ICASSP)},
+pages={2837--2841},
+year = {2016},
+}
+
+[* ウェブページの例]
+Instagram Blog, “Celebrating a community of 400 million,” http://blog.instagram.com/post/129662501137/150922-400million, Sep 2015, Last accessed: 09/24/2015. 
+	サイト名または著者名，ページタイトル，URL，わかるなら作成日，自分が最後にアクセスできた日
+
+@misc{instagram201509,
+author={Instagram Blog},
+title = {Celebrating a Community of 400 Million},
+howpublished="\url{http://blog.instagram.com/post/129662501137/150922-400million}",
+year = {2015},
+month = {Sep},
+note={Last accessed: 09/24/2015.},
+}
+
+
+【よくあるミス】
+	論文タイトル内に大文字略称が使われているものが小文字になっている
+　	例：Jia Deng, Wei Dong, Richard Socher, Li jia Li, Kai Li, and Li Fei-fei. Imagenet: A large-scale hierarchical image database. In In CVPR, 2009.  →Image「N」etが正式名称だがnが小文字になってしまっている
+　	Bibファイル内のtitleにて大文字にしたい場所を {} で囲めば必ず大文字にできます
+　		例：title = {Image{N}et: A large-scale hierarchical image database}
+【書き方のコツ】
+	過去に参考文献として挙げてる論文を探し出して，そこを参考に書く．
+	論文が載っているサイトの多くはcitationを出力してくれるところが多いので，それを利用する．
