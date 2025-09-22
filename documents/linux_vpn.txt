@@ -1,0 +1,54 @@
+Linuxから大学VPNに接続する
+[* TL;DR]
+	openconnectを使えば良い
+
+[* 背景]
+	大学VPNへの接続方法は，Windows/macOS/Android/iOS環境のみしか[マニュアル https://doshishaacjp.sharepoint.com/sites/it/SitePages/vpn_manual.aspx]がない．
+	接続に用いるCisco Secure ClientはLinux向けイメージの提供がない．
+	しかし，学外NWからokd-server，[契約データベース https://library.doshisha.ac.jp/library/dl/list/index.html]等の学内サービスを使いたい．
+
+[* 方法]
+	AnyConnectに対応した[OpenConnect http://www.infradead.org/openconnect/]を使います．
+ 環境はfedora42ですが，他のディストロでも同様にできるはず．
+ あらかじめ，SSOの二段階認証にDuoを追加・設定しておく．
+
+`openconnect`をインストール：`sudo dnf install openconnect`など
+接続してみる：
+code: terminal
+ $ sudo openconnect --protocol=anyconnect https://ssl-vpn.doshisha.ac.jp
+ POST https://ssl-vpn.doshisha.ac.jp/
+ Connected to 202.11.207.6:443
+ （略）
+ Please enter your username and password.
+ Username:cguh0000 # 大学のユーザーID
+ Password: # パスワード
+ Password: # pushもしくはDuoのワンタイムパスワード
+ （略）
+ Configured as 192.168.244.134, with SSL connected and DTLS connected
+ Session authentication will expire at Fri Jul 18 08:35:31 2025
+2つ目の`Password`を`push`とすると，スマホにDuoからプッシュ通知が来るので，Approveすると接続されます．
+この時点で，sshでokd-serverには接続できますが，グローバルIPは元のままです．
+なお，接続を切る際はCtrl-CでOKです．
+
+契約データベース等の利用のためには，グローバルIPも大学のものになってほしいところです．
+グローバルIPも大学系統にするには，下記のプロキシをブラウザ/OSに設定すれば良いです．
+HTTP/HTTPSプロキシ：`http://proxy.doshisha.ac.jp:8080`
+なお，Firefoxの場合，`about:preferences`の`Network Settings`から設定できます．
+うまく行ったかは，[https://ifconfig.me]等で確認できます（202.11.〜になっていればOK）．
+
+これで，Windows等でCisco Secure Clientを利用した場合と同様に学内サービスを利用できます．
+
+[* ユーザーID・パスワードの自動入力]
+毎回パスワードをいれるのは面倒なので，パスワードマネージャ`pass`を使って一発でつなげるようにしておくと便利です．
+	`pass`を使うのが初めてなら，`gpg --full-generate-key`でPGP鍵を作って，`pass init "鍵のE-Mail"`で初期化．
+	`pass insert vpn/doshisha`とかで，適当に文字列をいれる
+	`pass edit vpn/doshisha`して，下記のように編集：
+		code: vpn/doshisha
+	 	cguh0000 # 自分のユーザーID
+	 	PASS # 自分のパスワード
+	 	push
+	こんな感じの`alias`をいれる：
+		code: .bashrc
+			alias vpn='pass show vpn/doshisha | sudo openconnect --protocol=anyconnect https://ssl-vpn.doshisha.ac.jp'
+	`vpn`=>Duoで認証でつながる！便利になった！
+セキュリティ的には？：パスワードが一旦標準入出力を通るのはアレですが，他はそれなりに安全なはずです．`pass`にPGP鍵のパスワードは求められるはず
