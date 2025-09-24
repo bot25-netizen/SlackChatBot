@@ -19,7 +19,7 @@ try:
     generative_model = genai.GenerativeModel("gemini-2.0-flash")
 except KeyError:
     logging.error("環境変数 GEMINI_API_KEY が設定されていません．")
-    generative_model = None # モデルをNoneに設定し、起動は継続させる
+    generative_model = None
 
 # --- 資料情報リスト ---
 # documentsフォルダにファイルを追加・削除した場合も、ここのリストを更新すればOK
