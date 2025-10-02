@@ -34,6 +34,12 @@ DOCUMENTS_INFO = [
     {"keyword": "深層学習教材", "filename": "kyouzai_deep_learning.txt", "description": "ディープラーニング（深層学習）の概念や理論に関する学習教材を紹介している資料．"},
     {"keyword": "統計学教材", "filename": "kyouzai_statistics.txt", "description": "統計学の学習教材を紹介している資料．"},
     {"keyword": "線形代数教材", "filename": "kyouzai_linear_algebra.txt", "description": "線形代数の学習教材を紹介している資料．"},
+    {"keyword": "サービス管理者", "filename": "kanrisya.txt", "description": "研究室内で使用している各サービスのサービス管理者についてまとめたもの"},
+    {"keyword": "Linux繋げ方", "filename": "linux_vpn.txt", "description": "Linuxから大学VPNに接続する方法をまとめたもの"},
+    {"keyword": "博士論文提出", "filename": "Hakushi.txt", "description": "博士論文提出やそれに博士論文提出に関する疑問点や懸念点についてまとめたもの"},
+    {"keyword": "スライド作成ヒント", "filename": "Making_Slide.txt", "description": "スライド作成におけるアドバイスやヒントをまとめたもの"},
+    {"keyword": "出張費申請", "filename": "businesstrip_flow.txt", "description": "出張費申請の流れやその概要についてまとめたもの"},
+    {"keyword": "深層学習Q&A", "filename": "deepresearch_QA.txt", "description": "深層学習研究でよくあるQ&Aをまとめたもの"},
     {"keyword": "自己紹介", "filename": "yourprofile.txt", "description": "AIアシスタント自身の役割や、何ができるかといった自己紹介．"}
 ]
 
