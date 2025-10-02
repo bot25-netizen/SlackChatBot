@@ -1,0 +1,19 @@
+git clone 後に新規リモートリポジトリとして登録
+SQUID内で実行すると仮定
+1.	[GitHub https://github.com/login]でリモートリポジトリを作成
+2.	鍵を作成していない場合はターミナル上で`ssh-keygen`を打ち込み鍵作成．
+3.	作成した公開鍵をGitHubに登録．鍵は`/sqfs/home/.ssh`にあり，ディレクトリ移動して`cat id_rsa.pub`をターミナルで打ち込めば，表示される
+4.	リモートリポジトリをclone `git clone クローンしたいリポジトリのURL 新しいプロジェクト名`
+5.	リモート元を確認`git remote -v`
+結果の例
+code:example
+ origin  クローンしたいリポジトリのURL (fetch)
+ origin  クローンしたいリポジトリのURL (push)
+このクローンしたいリポジトリのURL部分を書き換えることで新たなリポジトリとして登録可能
+6.	`git remote set-url origin 1で作成したリポジトリのURL`を実行
+実行後の結果の例
+code:example
+ git remote -v
+ origin  最初に作成したリポジトリのURL (fetch)
+ origin  最初に作成したリポジトリのURL (push)
+7.	README.md等を書き換えてコミットし，`git push origin master`を打ち込む
