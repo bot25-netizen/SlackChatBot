@@ -36,7 +36,7 @@ DOCUMENTS_INFO = [
     {"keyword": "線形代数教材", "filename": "kyouzai_linear_algebra.txt", "description": "線形代数の学習教材を紹介している資料．"},
     {"keyword": "サービス管理者", "filename": "kanrisya.txt", "description": "研究室内で使用している各サービスのサービス管理者についてまとめたもの"},
     {"keyword": "Linux繋げ方", "filename": "linux_vpn.txt", "description": "Linuxから大学VPNに接続する方法をまとめたもの"},
-    {"keyword": "博士論文提出", "filename": "Hakushi.txt", "description": "博士論文提出やそれに博士論文提出に関する疑問点や懸念点についてまとめたもの"},
+    {"keyword": "博士論文提出", "filename": "hakushi_submit.txt", "description": "博士論文提出やそれに博士論文提出に関する疑問点や懸念点についてまとめたもの"},
     {"keyword": "スライド作成ヒント", "filename": "Making_Slide.txt", "description": "スライド作成におけるアドバイスやヒントをまとめたもの"},
     {"keyword": "出張費申請", "filename": "businesstrip_flow.txt", "description": "出張費申請の流れやその概要についてまとめたもの"},
     {"keyword": "深層学習Q&A", "filename": "deepresearch_QA.txt", "description": "深層学習研究でよくあるQ&Aをまとめたもの"},
