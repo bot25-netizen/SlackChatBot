@@ -1,0 +1,88 @@
+## Dockerによる仮想環境構築ガイド 🐳
+このガイドは、DockerとDocker Composeを使用して、クリーンで再現性の高い開発・実験環境を構築する手順をまとめたものです。
+
+## STEP 1: 設定ファイルの作成
+まず、環境の設計図となる2つのファイル (Dockerfile, docker-compose.yml) と、必要に応じてPythonライブラリのリスト (requirements.txt) を用意します。
+
+1. Dockerfile の作成 (環境の設計図)
+コンテナのベースとなるOSや、インストールするライブラリなどを定義します。
+
+ベースイメージの指定: FROM python:3 のように、Docker Hubで公開されているイメージから環境の土台を選びます。
+
+コマンドの実行: RUN apt-get update や RUN pip install といったコマンドを記述し、必要なツールやライブラリをインストールします。
+
+Dockerfile
+
+# Dockerfileの例
+# ベースイメージとしてPython 3を指定
+FROM python:3
+
+# コンテナ内の作業ディレクトリを指定
+WORKDIR /workspace
+
+# 必要なパッケージをインストール (vimなど)
+RUN apt-get update && apt-get install -y vim
+
+# Pythonライブラリをrequirements.txtから一括インストール
+COPY requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+2. docker-compose.yml の作成 (環境の起動設定)
+作成したDockerfileを元に、コンテナをどのように起動するか（ディレクトリの同期など）を定義します。
+
+ボリュームのマウント: volumes設定で、手元のPCのディレクトリ (source) をコンテナ内のディレクトリ (target) に同期（マウント）できます。これにより、手元のエディタで編集したコードをすぐにコンテナ内で実行できます。
+
+tty: true: これを記述すると、コンテナが起動し続けます。Pythonイメージなどでは、これがないと起動後すぐにコンテナが終了してしまうため重要です。
+
+YAML
+
+# docker-compose.ymlの例
+version: "3.3"
+
+services:
+  # サービス名 (任意)
+  sample:
+    # Dockerfileがある場所を指定 (「.」はカレントディレクトリ)
+    build: .
+    volumes:
+      - type: bind
+        # 同期したいローカルのディレクトリパス
+        source: /home/user/Desktop/my-project
+        # コンテナ内の同期先ディレクトリ
+        target: /workspace
+    # コンテナを起動し続ける設定
+    tty: true
+## STEP 2: コンテナの起動と操作
+設定ファイルが準備できたら、コマンドを使ってコンテナを操作します。
+
+1. コンテナのビルドと起動
+docker-compose.ymlがあるディレクトリで以下のコマンドを実行すると、Dockerfileの内容に基づいてコンテナがバックグラウンドで起動します。
+
+# 「my-project」というプロジェクト名でコンテナをバックグラウンド起動
+docker-compose -p "my-project" up -d
+起動中のコンテナはdocker psコマンドで確認できます。
+
+2. コンテナ内に入る
+起動したコンテナの中に入って作業をするには、以下のコマンドを実行します。
+
+# 「my-project_sample_1」という名前のコンテナに入る
+docker exec -it my-project_sample_1 bash
+プロンプトの表示が変わればコンテナ内に入れており、exitコマンドで抜けられます。
+
+## STEP 3: 便利な使い方
+モデル学習など単発のコマンド実行
+docker-compose run を使うと、コンテナに入らずにコマンドを実行できます。特に、長時間かかる処理に便利です。
+
+# 「sample」サービスで「python train.py」を実行
+docker-compose run sample python train.py
+
+# バックグラウンドで実行（長時間かかる学習などに便利）
+docker-compose run -d sample python train.py
+バックグラウンド実行したコマンドのログ（標準出力）は、docker logs <コンテナID>で確認できます。
+
+## 補足情報 (Tips)
+ライブラリのエラー対処:
+OpenCVなどでImportErrorが出た場合、必要な依存関係がベースイメージに含まれていない可能性があります。その際は、apt-getで関連ライブラリをインストールするか、初めから必要なライブラリが含まれたDockerイメージ（例: jjanzic/docker-python3-opencv）をDocker Hubで探すのが効率的です。
+
+コンテナ内でのGit/SSH利用:
+コンテナ内でGitを使いたい場合は、コンテナ内でssh-keygenコマンドを実行して新しいSSHキーを作成し、その公開鍵をGitHubに登録すれば、SSH経由でのgit cloneやgit pushが可能になります。
