@@ -40,6 +40,7 @@ DOCUMENTS_INFO = [
     {"keyword": "スライド作成ヒント", "filename": "making_slide.txt", "description": "スライド作成におけるアドバイスやヒントをまとめたもの"},
     {"keyword": "出張費申請", "filename": "businesstrip_flow.txt", "description": "出張費申請の流れやその概要についてまとめたもの"},
     {"keyword": "深層学習Q&A", "filename": "deepresearch_QA.txt", "description": "深層学習研究でよくあるQ&Aをまとめたもの"},
+    {"keyword": "学会スケジュール", "filename": "schedule.txt", "description": " 学会の投稿と参加に必要なスケジュール"},
     {"keyword": "自己紹介", "filename": "yourprofile.txt", "description": "AIアシスタント自身の役割や、何ができるかといった自己紹介．"}
 ]
 
