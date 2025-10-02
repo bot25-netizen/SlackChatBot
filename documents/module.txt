@@ -1,0 +1,57 @@
+よく使うモジュール　インストール方法まとめ
+[* sklearn]
+	pipでインストールする場合
+`pip install scikit-learn`
+	anacondaでインストールする場合
+`conda install scikit-learn`
+
+[* hydra]
+	pipでインストール
+`pip install hydra-core --upgrade`
+	condaでインストール
+`conda install -c conda-forge hydra-core`
+
+[* cv2]
+	pipでインストール
+`pip install opencv-python`
+※pipが古いとエラーはくため`pip install --upgrade pip`をすること
+	condaでインストール
+`conda install opencv`
+
+[* scipy]
+	pipでインストール
+`pip install scipy`
+
+[* tensorboard]
+	pipでインストール
+`pip install tensorboard`
+	condaでインストール
+`conda install -c conda-forge tensorboard`
+
+[* skimage]
+	pipでインストール
+`pip install scikit-image`
+	condaでインストール
+`conda install -c anaconda scikit-image`
+
+[* tqdm]
+	pipでインストール
+`pip install tqdm`
+
+[* LPIPS]
+	pipでインストール
+`pip install lpips`
+
+[* optuna]
+	pipでインストール
+`pip install optuna`
+	condaでインストール
+`conda install -c conda-forge optuna`
+
+[* pytorch_memlab]
+	pipでインストール
+`pip install pytorch_memlab`
+
+[* torchmetrics]
+	pipでインストール
+`pip install torchmetrics`
