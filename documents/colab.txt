@@ -1,0 +1,39 @@
+Google Colaboratory (Google colab)について
+Google Colaboratoryはブラウザ上でPythonを使えるサービスです．
+GPUを使うこともできます．
+以下ではよく使う設定や気をつけることについて書いています．
+
+[*** 基本的な使い方手順]
+google colabは #GoogleWorkspaceForEducation のgoogleアカウントと一緒に使うことがお勧めです．
+Google workspaceのgoogle driveでは個人の容量が多めに設定されているので，
+コードやデータを多めに保存することができます．
+[** 1. Google Driveをブラウザで開く]
+[https://gyazo.com/ad511f7e1caaa9072ff80dd01b751b08]
+ブラウザのGoogle Drive上で右クリックをした後，その他を選択するとアプリを選択できます．
+ここでgoogle colaboratoryをクリックしてください．
+最初はGoogle Colaboratoryが表示されていないと思うので，
+"アプリを追加"からgoogle colaboratoryを検索してインストールしてください．
+
+[** 2. ノートブックを開く]
+[https://gyazo.com/0ff14a7375c901e11e0c6228fca7dd8c]
+ノートブックを開くと上記のような画面になります．
+基本的には
+	テキスト (テキストAと書いてある部分)
+	コード (###code1###と書いてある部分)
+をこのノートブックに追記していくことになります(基本的にはコードの方)．
+GPUは"ランタイム"タブの，"ランタイムのタイプを変更"から設定できます．
+より詳しい説明は[このページ https://aiacademy.jp/media/?p=1037]を見てみてください．
+
+[*** 気をつけるといい点]
+[** 1. ターミナルで利用するコマンドについて]
+ターミナルで実行する`ls`や`cp`などのコマンドが実行したい場合，先頭に`!`をつけてください．
+例) `!cp fileA fileB`
+ただし，`cd`コマンドだけは`%`をつけるようにしてください．
+[** 2. google colab上でのgoogle drive利用について]
+google colab上でgoogle driveを利用する場合は，以下のコードを実行してください．
+code: google drive
+ from google.colab import drive
+ drive.mount('/content/drive')
+このコードを実行した後，ディレクトリはrootディレクトリとなっていますが，
+google driveの中身が入っているのは，My Driveディレクトリ以下です．
+なので，`cd`コマンドを利用してディレクトリを移動するようにしてください
