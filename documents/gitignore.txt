@@ -1,0 +1,11 @@
+git ignore書き方
+ファイルやディレクトリを無視したい時は，ルートディレクトリ下に.gitignoreファイルを作成する
+[* 書き方]
+code:.gitignore
+ # ファイル名で指定
+ sample.html
+ # ディレクトリ名で指定
+ work/
+ # 拡張子での指定(以下の例はhtmlファイルは無視，ただし，sample.htmlだけはgitで管理する場合)
+ *.html
+ !sample.html
