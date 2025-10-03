@@ -1,0 +1,176 @@
+postgreSQLをsquidで使う方法
+[内容]
+optunaの並列分散最適化に使用するPostgreSQLをSQUID上で使用する方法
+手こずったのでメモ
+※パスは自分の環境に合わせて適宜読み替えてください
+
+[事前準備]
+postgreSQLのソースファイルを[ここ https://www.postgresql.org/ftp/source/v13.7/]からダウンロード（.tar.gzのやつだけ）
+
+[postgre sqlのinstall]
+code:postgreSQL install
+ # ファイルを解凍 (xxはバージョンに合わせて変更)
+ # 13.7の部分はダウンロードしてきたファイルに合わせて変更
+ tar zxvf postgresql-13.7.tar.gz
+ cd postgresql-13.7
+ export WORK=/sqfs/work/(SQUIDグループ名)/(SQUIDユーザー名)
+ export PGDATA=$WORK/data
+ ./configure --prefix=$WORK/p13.7 --exec-prefix=$WORK/p13.7 --datarootdir=$WORK/p13.7
+ make
+ make install
+
+[postgreSQLの初期化]
+code: init postgreSQL
+ cd $WORK
+ ./p13.7/bin/initdb --encoding=UTF8 --no-locale
+追加で，$PGDATA/postgresql.confと，$PGDATA/pg_hba.confの中身をそれぞれ以下のように修正
+code: postgresql.conf
+ #listen_addresses = 'localhost'
+ ↓
+ listen_addresses = '*'
+code: pg_hba.conf
+ # 末尾に追加
+ host　　　　　all　　　　　all　　　　　0.0.0.0/0　　　　　trust
+
+[PostgreSQLのユーザとデータベースの作成]
+ログインサーバー(要はいつも最初に接続するマシン)で実行
+code: start postgreSQL
+ ./p13.7/bin/pg_ctl -D $PGDATA -l $WORK/p13.7/logfile start
+その後，postgresユーザー"pguser"を作成
+code: create pguser
+ ./p13.7/bin/psql postgres
+ ### 出力 ###
+ psql (13.7)
+ Type "help" for help.
+ ### 出力終わり ###
+ postgres=# create user pguser createdb;   # #以下の文字を入力
+ ### 出力 ###
+ CREATE ROLE
+ ### 出力終わり ###
+ postgres=# \q   # \qを打ち込んで終了
+データベース"optunadb"を作成
+code: create optunadb
+ ./p13.7/bin/psql --username=pguser postgres
+ ### 出力 ###
+ psql (13.7)
+ Type "help" for help.
+ ### 出力終わり ###
+ postgres=> create database optunadb;   # #以下の文字を入力
+ ### 出力 ###
+ CREATE DATABASE
+ ### 出力終わり ###
+ postgres=> \q    # \qを打ち込んで終了
+最後にpostgreSQLを停止 :  `./p13.7/bin/pg_ctl stop`
+
+[* 仮想環境の作成]
+[SQUID 環境構築編]に従って仮想環境を作成
+仮想環境へパスを通す
+`export PATH=/sqfs/work/(SQUIDグループ名)/(SQUIDユーザー名)/venv/(環境名)/bin:$PATH`
+code: pip install
+ pip install --upgrade pip
+ pip install optuna
+ pip install psycopg2    #パスを通していないとここでエラー
+ ### abciの場合，　PATH=$PATH:/home/acd13240vi/HSI_zeroshot/p13.7/bin
+ ### 参照 : https://yohei-a.hatenablog.jp/entry/20210613/1623549111
+ pip isntall pandas
+
+[データベースのテーブルを作成]
+code: create database
+ cd $WORK
+ source /sqfs/work/(SQUIDグループ名)/(SQUIDユーザー名)/venv/(環境名)/bin/activate
+ export LD_LIBRARY_PATH=$WORK/p13.7/lib:$LD_LIBRARY_PATH
+ ./p13.7/bin/pg_ctl -D $PGDATA -l $WORK/p13.7/logfile start
+ python
+ >> import optuna
+ >> study = optuna.create_study(study_name='distributed-example', \ storage='postgresql://pguser@127.0.0.1:5432/optunadb')
+ >> quit()
+ ./p13.7/bin/pg_ctl stop
+
+[ログインノードを使ってoptuna動作チェック]
+code: optuna test in login node
+ cd $WORK
+ export LD_LIBRARY_PATH=$WORK/p13.7/lib:$LD_LIBRARY_PATH
+ ./p13.7/bin/pg_ctl -D $PGDATA -l $WORK/p13.7/logfile start
+ python
+ >> import optuna
+ >> study = optuna.study.load_study(study_name='distributed-example', storage='postgresql://pguser@127.0.0.1:5432/optunadb')
+ >> def objective(trial):
+ ...     x = trial.suggest_uniform('x', -10, 10)
+ ...     return (x - 2) ** 2
+ >> study.optimize(objective, n_trials=3)
+ >> quit()
+ 
+ # 結果の確認
+ python
+ >> import optuna
+ >> import pandas
+ >> study = optuna.study.load_study(study_name='distributed-example', storage='postgresql://pguser@127.0.0.1:5432/optunadb')
+ >> df = study.trials_dataframe(attrs=('number', 'value', 'params', 'state'))
+ >> print(df)
+ >> quit()
+ ./p13.7/bin/pg_ctl stop
+ 
+
+バッチジョブ用スクリプト(squid)
+code: optuna_tuning.sh
+ #!/bin/sh
+ 
+ #$ -g gcc50511
+ #$ -l rt_G.large=1
+ #$ -l h_rt=1:00:00
+ #$ 
+ #$ -m e
+ #$ -j y
+ #$ -cwd
+ 
+ module load BasePy/2021
+ module --force switch python3/3.6 python3/3.6.GPU
+ module load BaseGPU/2021
+ module load cudnn/8.2.0.53
+ 
+ JOBNUM="${PBS_JOBID%:*}"
+ OPTUNA_TMP="optuna_tmp"
+ 
+ # pathの定義．各pathはそれぞれの環境，実行ディレクトリに合わせて変更
+ export WORK=/sqfs/work/G15252/u6b363/PytorchTemplate
+ export PATH=/sqfs/work/G15252/u6b363/PytorchTemplate/venv/test-env/bin:$PATH
+ export PGDATA=$WORK/database
+ export LD_LIBRARY_PATH=$WORK/p13.7/lib:$LD_LIBRARY_PATH
+ cd $PBS_O_WORKDIR
+ 
+ if [ $JOBNUM -eq 0 ];then
+    #マスターノードでPostgreSQLのデータベースを起動
+    mkdir $OPTUNA_TMP
+    # データベースサーバーのIPアドレスを取得
+    echo $(ip --oneline --family inet address show dev ib0 ) | cut -d' ' -f4 | cut -d'/' -f1 > $OPTUNA_TMP/job-master
+    # サーバーの起動
+    $WORK/p13.7/bin/pg_ctl -D $PGDATA -l $WORK/p13.7/logfile start
+ else
+    #マスターノード以外でoptuna_sample.pyを実行
+    while [ ! -e $OPTUNA_TMP/job-master ];do
+         sleep 1
+    done
+    # IPアドレスをRDBIPに取得
+    RDBIP=`cat $OPTUNA_TMP/job-master`
+    # 仮想環境のactivate
+    source /sqfs/work/G15252/u6b363/PytorchTemplate/venv/test-env/bin/activate
+    
+    # スクリプトの実行
+    python3 optuna_sample_hydra.py optuna.IP=$RDBIP \
+                                   optuna.database_name=optunadb \
+                                   optuna.study_name=hydra_test2
+    
+    HOST=`hostname`
+    touch $OPTUNA_TMP/$HOST
+ fi
+ 
+ # スクリプト実行終了後，データベースサーバーの停止
+ num=0
+ if [ $JOBNUM -eq 0 ];then
+    while [ $((JOBNUM+1)) -ge $num ]; do
+      num=`ls $OPTUNA_TMP |wc -l`
+      sleep 1
+    done
+    rm -fr $OPTUNA_TMP
+    $WORK/p13.7/bin/pg_ctl stop
+ fi
