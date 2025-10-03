@@ -40,7 +40,17 @@ DOCUMENTS_INFO = [
     {"keyword": "スライド作成ヒント", "filename": "making_slide.txt", "description": "スライド作成におけるアドバイスやヒントをまとめたもの"},
     {"keyword": "出張費申請", "filename": "businesstrip_flow.txt", "description": "出張費申請の流れやその概要についてまとめたもの"},
     {"keyword": "深層学習Q&A", "filename": "deepresearch_QA.txt", "description": "深層学習研究でよくあるQ&Aをまとめたもの"},
-    {"keyword": "学会スケジュール", "filename": "schedule.txt", "description": " 学会の投稿と参加に必要なスケジュール"},
+    {"keyword": "学会スケジュール", "filename": "schedule.txt", "description": "学会の投稿と参加に必要なスケジュール"},
+    {"keyword": "Git使い方", "filename": "git_use.txt", "description": "Git使い方についてまとめたもの"},
+    {"keyword": "よく使うモジュール", "filename": "module.txt", "description": "よく使うモジュールをインストールする方法"},
+    {"keyword": "GitのコードをColabで", "filename": "git_colab.txt", "description": "GitHubに公開されているコードをGoogleColabで動かす方法"},
+    {"keyword": "Colab手順", "filename": "colab.txt", "description": "GoogleColabについての基本的な手順についてまとめたもの"},
+    {"keyword": "GitIgnore", "filename": "gitignore.txt", "description": "git ignoreの書き方"},
+    {"keyword": "リモートリポジトリ", "filename": "gitclone.txt", "description": "git clone後に新規リモートリポジトリとして登録"},
+    {"keyword": "ローカルリポジトリ", "filename": "gitremote.txt", "description": "ローカルリポジトリをGItHubに接続する手順と注意点"},
+    {"keyword": "Docker", "filename": "docker.txt", "description": "Dockerによる仮想環境構築ガイド"},
+    {"keyword": "ABCI", "filename": "abci.txt", "description": "ABCIスーパーコンピュータをしようする上での基本的なコマンドとPython仮想環境の構築手順をまとめたもの"},
+    {"keyword": "スケジュール", "filename": "schedule.txt", "description": "学会の投稿と参加に必要なスケジュール"},
     {"keyword": "自己紹介", "filename": "yourprofile.txt", "description": "AIアシスタント自身の役割や、何ができるかといった自己紹介．"}
 ]
 
