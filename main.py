@@ -16,7 +16,7 @@ slack_handler = AsyncSlackRequestHandler(slack_app)
 
 try:
     genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-    generative_model = genai.GenerativeModel("gemini-2.0-flash")
+    generative_model = genai.GenerativeModel("gemini-2.5-flash")
 except KeyError:
     logging.error("環境変数 GEMINI_API_KEY が設定されていません．")
     generative_model = None
