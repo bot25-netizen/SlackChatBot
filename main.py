@@ -88,7 +88,7 @@ async def send_long_message(client, channel: str, thread_ts: str, text: str):
             split_pos = text.rfind("\n", current_pos, current_pos + limit)
         
         if split_pos == -1 or split_pos <= current_pos:
-            split_pos = current_pos + limit
+            split_pos = current_pos + limit - 1  # ちょうど limit 文字で切る
         
         parts.append(text[current_pos:split_pos+1])
         current_pos = split_pos + 1
@@ -198,7 +198,10 @@ async def handle_message(event, say, client, context):
 
                 reply_text = await get_gemini_response(fallback_query)
 
-                await client.chat_update(channel=channel_id, ts=thinking_message['ts'], text=reply_text)
+                # chat_update で長文を書き込むと msg_too_long になるため、
+                # 「考え中」メッセージを消してから分割投稿する
+                await client.chat_delete(channel=channel_id, ts=thinking_message['ts'])
+                await send_long_message(client, channel=channel_id, thread_ts=thread_ts, text=reply_text)
 
         except Exception as e:
             logging.error(f"メッセージ処理中のエラー: {e}")
